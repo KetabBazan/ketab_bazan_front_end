@@ -1,4 +1,4 @@
-import { Button, Dialog, IconButton } from "@mui/material"
+import { Button, Dialog, IconButton, ToggleButton } from "@mui/material"
 import ArticleCard from "./Comment/tabContent/articleCard"
 import { Divider, Grid } from "@mui/material"
 import { Link } from "react-router-dom";
@@ -6,6 +6,8 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import { useState } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import axios from "axios";
+import CheckIcon from '@mui/icons-material/Check';
+import { baseUrl } from "../Variable";
 
 
 const VeriFyArticles = ({ article, refresh }) => {
@@ -15,31 +17,23 @@ const VeriFyArticles = ({ article, refresh }) => {
 
     const [dialogStatus, setDialogStatus] = useState(false)
 
-    const [verifyIsLoading, setVerifyIsLoading ] = useState(false)
-    const [declineIsLoading, setdeclineIsLoading ] = useState(false)
-
     const {
-        id, image, title, summary, created_jalali, isverified, text
+        id, image, title, summary, created_jalali, isverified, body
     } = article
 
-    const onVerifyClicked = ()=>{
-        setVerifyIsLoading(true)
+    const changeStatus = () => {
+        let token = "Token " + localStorage.getItem('token');
+        axios.post(`${baseUrl}/admin-panel/article/verify/${id}`, {} , {
+            headers: {
+                'Content-Type': 'application/json ',
+                "Authorization": token
+            }
+        }).then(res => console.log(res)).catch(e => console.log(e))
         // axios post to verify article with this id
         // refresh list of articles and remove this one
         // refresh()
     }
 
-    const onDeclineClicked = ()=>{
-        setdeclineIsLoading(true)
-        // axios post to decline article with this id
-        //axios.post("dasdadas/"+id,{
-        //    Headers:{
-        //        auther:"token "
-        //    }
-        //})
-        // refresh list of articles and remove this one
-        // refresh()
-    }
 
     return <div>
         <Grid
@@ -111,13 +105,16 @@ const VeriFyArticles = ({ article, refresh }) => {
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-evenly" }}>
-                <Button disabled={verifyIsLoading} onClick={onVerifyClicked} variant="outlined" color="success">
-                    Verify
-                </Button>
 
-                <Button disabled={declineIsLoading} onClick={onDeclineClicked} variant="outlined" color="error">
-                    Decline
-                </Button>
+                <ToggleButton
+                    value="check"
+                    selected={isverified}
+                    onChange={() => {
+                        changeStatus()
+                    }}
+                >
+                    <CheckIcon />
+                </ToggleButton>
 
                 <Button onClick={() => { setDialogStatus(true) }} variant="outlined">
                     Text
@@ -130,21 +127,21 @@ const VeriFyArticles = ({ article, refresh }) => {
         />
 
         <Dialog open={dialogStatus}>
-            <div style={{ padding: "24px", paddingTop:"42px" }}>
-            {text}
+            <div style={{ padding: "24px", paddingTop: "42px" }}>
+                {body}
             </div>
             <IconButton
-          aria-label="close"
-          onClick={() => { setDialogStatus(false) }}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
+                aria-label="close"
+                onClick={() => { setDialogStatus(false) }}
+                sx={{
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: (theme) => theme.palette.grey[500],
+                }}
+            >
+                <CloseIcon />
+            </IconButton>
         </Dialog>
     </div>
 }
