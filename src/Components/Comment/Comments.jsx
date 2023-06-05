@@ -11,6 +11,7 @@ import axios from "axios";
 import SimpleContext from "./SimpleContext";
 import Comment from "./Comment.jsx";
 import Box from '@mui/material/Box';
+import { useParams } from "react-router-dom";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -23,7 +24,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const Comments = () => {
     const context = useContext(SimpleContext);
-
+   
    
 
 
@@ -74,7 +75,10 @@ const Comments = () => {
                         backgroundColor: "rgb(251,251,251)", paddingTop: "1px"
                     }}>
 
-                        {context.comments.length > 0 ? (
+                        {
+                        
+                        context.comments.length > 0 ? (
+                            
                             context.comments.map(comment => (
                             
                                 
@@ -89,11 +93,12 @@ const Comments = () => {
                                     comment_text = { comment.comment_text }
                                     user = { comment.user }
                                     comment_id = { comment.id }
-                                    replys = { comment.reply }
+                                    replys = { comment.reply.map() }
                                     created_on = { comment.created_on }
                                     img = { comment.user}
                                     like = {comment.like}
                                     dislike = {comment.dislike}
+                                    ide = {context.id}
                                 />
 
 

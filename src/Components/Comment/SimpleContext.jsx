@@ -1,5 +1,5 @@
 import { createContext } from "react";
-
+import { useParams } from "react-router-dom";
 const SimpleContext = createContext({
     flag:"",
     img:"",
@@ -7,6 +7,8 @@ const SimpleContext = createContext({
     comments: [],
     comment: "",
     click : "" ,
+    
+    
     setClick : () => {} ,
     handleCreateNewComment: () => {},
    

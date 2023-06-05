@@ -5,11 +5,13 @@ import Comment from "../Components/Comment/Comment";
 import React from 'react';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 
+
      Enzyme.configure({ adapter: new Adapter()});
 
 
+
      const setup = () => {
-            return shallow(<Comment/>);
+            return render(<Comment  />);
            
       }
 
@@ -26,18 +28,18 @@ import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 
 
       test("render without error dislike" , () => {
-       const wrapper =  setup();
+       const wrapper =  shallow(<Comment/>);
        const component = findbytestAttribute(wrapper, 'dislike');
        expect(component.length).toBe(1);
     })
 
 
     test("dislike button work correctly" , () => {
-       const wrapper =  setup();
+       const wrapper =   shallow(<Comment/>);
        const dislikevaluebeforclick = findbytestAttribute(wrapper, 'dislikevalue');
-       const dislikebutton = findbytestAttribute(wrapper, 'dislikebutton');
+       const dislikebutton = findbytestAttribute(wrapper, 'dislike');
        dislikebutton.simulate('click');
        const dislikevalue = findbytestAttribute(wrapper, 'dislikevalue');
-       expect(dislikevalue.text()).toContain(dislikevaluebeforclick - 1);
+       expect(dislikevalue.contain()).toBe(dislikevaluebeforclick.text() - 1);
       
     })

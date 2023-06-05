@@ -17,7 +17,7 @@ import { baseUrl } from "../../Variable";
 import SimpleContext from "./SimpleContext";
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
-import {Link,useParams,} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import IconButton from '@mui/material/IconButton';
@@ -41,15 +41,23 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 
-const Comment = ({ comment_text, user, comment_id, replys ,created_on , like , dislike }) => {
+const Comment = ({ comment_text, user, comment_id, replys ,created_on , like , dislike , ide }) => {
     let token = "Token " + localStorage.getItem('token');
     const [reply, setReply] = useState("");
     const [id, setId] = useState("");
     const [flag1, setFlag1] = useState("0");
     
     const context = useContext(SimpleContext);
-    const params = useParams();
-    const idid = params.id;
+    // const params = useParams();
+    // const idid = params.id;
+
+
+    // const hold = {ide} ;
+    // const idid =JSON.stringify(hold) 
+
+    const hold = 44 ;
+    const idid =JSON.stringify(hold) 
+
     useEffect(() => {
         intialize();Show();  console.log(context.refresh);
     }, [context.refresh,flag1]);
@@ -77,7 +85,7 @@ const Comment = ({ comment_text, user, comment_id, replys ,created_on , like , d
    
     
 
-        axios.get(`${baseUrl}/comment/?id=${idid}`, {
+        axios.get(`${baseUrl}/comment/?id=${44}`, {
             headers: {
                'Content-Type': 'application/json ',
                "Authorization": token
@@ -476,7 +484,7 @@ const Comment = ({ comment_text, user, comment_id, replys ,created_on , like , d
         
       
                     <Grid container >
-                    <Grid xs={1} md={1}>
+                    <Grid item xs={1} md={1}>
                     <a style={{ position: "relative", top: "-40px", right: "50px" }}>{user}</a>
 
                     <p  style={{ position: "relative", top: "-45px", right: "43px" }}>{(new Date(created_on).toLocaleDateString('fa-IR'))}</p>
@@ -489,7 +497,7 @@ const Comment = ({ comment_text, user, comment_id, replys ,created_on , like , d
                             <ThumbDownIcon color="primary"  onClick={dislikeFunction} />
                        </IconButton>
                     </Grid>
-                    <Grid xs={0.7} sm={0.45} md={0.45}></Grid>
+                    <Grid item xs={0.7} sm={0.45} md={0.45}></Grid>
 
                     {/* </div> */}
                    
@@ -541,15 +549,15 @@ const Comment = ({ comment_text, user, comment_id, replys ,created_on , like , d
 
                                 <Grid item xs={12} >
 
-                                    {replys.map(replyexa => (
+                                    {replys => (
                                         <div style={{position:"relative"}}>
                                             
                                             <Grid  container >
 
 <Grid  item xs={8.7} md={9.9}></Grid>
 
-<Grid item xs={0.3} md={0.15}>
-<a style={{ position:"absolute", top:"21px"}}>{dislike}</a>
+<Grid   data-test="dislikevalue"  item xs={0.3} md={0.15}>
+<a    style={{ position:"absolute", top:"21px"}}>{dislike}</a>
 </Grid>
 
 
@@ -563,8 +571,8 @@ const Comment = ({ comment_text, user, comment_id, replys ,created_on , like , d
  <Grid xs={0.7} sm={0.45} md={0.45}></Grid>
 
 
- <Grid item xs={0.3} md={0.15}>
-<a style={{ position:"absolute", top:"21px"}}>{like}</a>
+ <Grid   item xs={0.3} md={0.15}>
+<a   data-test="likevalue" style={{ position:"absolute", top:"21px"}}>{like}</a>
 </Grid>
 
 
@@ -604,7 +612,7 @@ const Comment = ({ comment_text, user, comment_id, replys ,created_on , like , d
 
                                                     <Avatar 
                                                             onClick={handleClickOpen} style={{ marginTop: "15px" }} alt="Remy Sharp" 
-                                                    src={`${baseUrl}/profile/getimage/?username=${replyexa.user}`} />
+                                                    src={`${baseUrl}/profile/getimage/?username=${replys.user}`} />
                                                       <SimpleDialog
                                                     open={open}
                                                     onClose={handleClose}
@@ -612,14 +620,14 @@ const Comment = ({ comment_text, user, comment_id, replys ,created_on , like , d
 
 
                                                           
-                                                    <a style={{ position: "relative", top: "-45px", right: "47px" }}>{replyexa.user}</a>
+                                                    <a style={{ position: "relative", top: "-45px", right: "47px" }}>{replys.user}</a>
 
                                                     <p  style={{ position: "relative", top: "-48px", right: "43px" }}>{(new Date(created_on).toLocaleDateString('fa-IR'))}</p>
 
 
                                                  
 
-                                                    <p style={{ position: "relative", top: "-30px", right: "5px" }}>{replyexa.reply_text}</p>
+                                                    <p style={{ position: "relative", top: "-30px", right: "5px" }}>{replys.reply_text}</p>
 
 
                                                 </div>
@@ -627,7 +635,7 @@ const Comment = ({ comment_text, user, comment_id, replys ,created_on , like , d
 
 
                                         </div>
-                                    ))}
+                                    )}
                                 </Grid>
                             </Grid>
 
